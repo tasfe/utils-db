@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="abstractDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="username" value="japanis" />
+		<property name="password" value="japanis" />
+		<property name="initialSize" value="3" />
+		<property name="maxActive" value="5" />
+		<property name="minIdle" value="3" />
+		<property name="maxIdle" value="5" />
+		<property name="maxWait" value="6000" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="testWhileIdle" value="true" />
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="numTestsPerEvictionRun" value="5" />
+		<property name="minEvictableIdleTimeMillis" value="-1" />
+	</bean>
+
+	<!-- data source -->
+	<bean id="shard0" parent="abstractDataSource">
+		<property name="url" value="jdbc:mysql://119.235.236.5:20306/shardtest_0000?zeroDateTimeBehavior=convertToNull&amp;tinyInt1isBit=false&amp;useUnicode=true&amp;mysqlEncoding=utf8&amp;connectTimeout=5000&amp;socketTimeout=5000&amp;useServerPrepStmts=true&amp;cachePrepStmts=true"/>
+	</bean>
+	<bean id="shard1" parent="abstractDataSource">
+		<property name="url" value="jdbc:mysql://119.235.236.5:20306/shardtest_0001?zeroDateTimeBehavior=convertToNull&amp;tinyInt1isBit=false&amp;useUnicode=true&amp;mysqlEncoding=utf8&amp;connectTimeout=5000&amp;socketTimeout=5000&amp;useServerPrepStmts=true&amp;cachePrepStmts=true"/>
+	</bean>
+
+	<bean id="shardDataSource" class="com.diwayou.utils.db.shard.ShardRoutingDataSource">
+		<property name="targetDataSources">
+			<map>
+				<entry key="shardtest_0000" value-ref="shard0"/>
+				<entry key="shardtest_0001" value-ref="shard1"/>
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="shard0"/>
+	</bean>
+
+</beans>

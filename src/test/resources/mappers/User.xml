@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.diwayou.utils.db.dao.UserDao">
+    <resultMap id="userResult" type="com.diwayou.utils.db.domain.User">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+    <sql id="commonSql">id,`name`,password,gmt_create,gmt_modified</sql>
+
+    <select id="get" parameterType="map" resultMap="userResult">
+        select
+        <include refid="commonSql"/>
+        from ${tname}
+        where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.diwayou.utils.db.domain.User">
+        <selectKey resultType="long" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into ${tname}
+        (<include refid="commonSql"/>)
+        VALUES
+        (#{user.id},#{user.name},#{user.password},NOW(),NOW())
+    </insert>
+
+    <delete id="delete" parameterType="map">
+		delete from ${tname}
+		WHERE
+		id = #{id}
+	</delete>
+
+    <select id="update" resultMap="userResult" parameterType="map">
+        update ${tname}
+        SET
+        <if test="name != null and name != ''">
+            name = #{user.name},
+        </if>
+        <if test="password != null and password != ''">
+            password = #{user.password},
+        </if>
+        gmt_modified = NOW()
+        WHERE
+        id = #{user.id}
+    </select>
+</mapper>  

@@ -2,7 +2,8 @@ package com.diwayou.utils.db.support;
 
 import com.diwayou.utils.db.exception.ShardDaoException;
 import com.diwayou.utils.db.shard.ShardContextHolder;
-import com.diwayou.utils.db.shard.route.RouteStrategy;
+import com.diwayou.utils.db.shard.route.DbRouteStrategy;
+import com.diwayou.utils.db.shard.route.TableRouteStrategy;
 import com.diwayou.utils.db.shard.rule.DbRule;
 import com.diwayou.utils.db.shard.rule.TableRule;
 import com.diwayou.utils.db.util.RouteUtil;
@@ -118,24 +119,24 @@ public abstract class AbstractShardDaoSupport extends SqlSessionDaoSupport imple
             throw new IllegalArgumentException("can't find route for table=" + getTableName());
         }
 
-        // set table route info
-        RouteStrategy tableRouteStrategy = tableRule.getRouteStrategy();
-        String tableNameSuffix = tableRouteStrategy.getRouteSuffix(routeKey, tableRule.getTableCount());
-        String tableName = RouteUtil.buildTableName(tableRule.getTableName(), tableNameSuffix);
-
-        parameter.put(RouteUtil.SQL_TABLE_NAME, tableName);
-
         // set db route info
         DbRule dbRule = tableRule.getDbRule();
         if (dbRule == null) {
             throw new IllegalArgumentException("must set dbRule for table=" + getTableName());
         }
 
-        RouteStrategy dbRouteStrategy = dbRule.getRouteStrategy();
+        DbRouteStrategy dbRouteStrategy = dbRule.getDbRouteStrategy();
         String dbNameSuffix = dbRouteStrategy.getRouteSuffix(routeKey, dbRule.getDbCount());
         String dbName = RouteUtil.buildDbName(dbRule.getDbName(), dbNameSuffix);
 
         ShardContextHolder.setShardDataSourceName(dbName);
+
+        // set table route info
+        TableRouteStrategy tableRouteStrategy = tableRule.getTableRouteStrategy();
+        String tableNameSuffix = tableRouteStrategy.getRouteSuffix(routeKey, dbRule.getDbCount(), tableRule.getTableCount());
+        String tableName = RouteUtil.buildTableName(tableRule.getTableName(), tableNameSuffix);
+
+        parameter.put(RouteUtil.SQL_TABLE_NAME, tableName);
     }
 
     private void clearRouteInfo() {

@@ -6,12 +6,12 @@
 	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
 	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-	<bean id="longRemainderRouteStrategy" class="com.diwayou.utils.db.shard.route.impl.LongRemainderRouteStrategy"/>
+	<bean id="longRemainderRouteStrategy" class="com.diwayou.utils.db.shard.route.impl.LongRemainderDbRouteStrategy"/>
 
 	<bean id="shardtestDbRule" class="com.diwayou.utils.db.shard.rule.DbRule">
 		<property name="dbCount" value="2"/>
 		<property name="dbName" value="shardtest"/>
-		<property name="routeStrategy" ref="longRemainderRouteStrategy"/>
+		<property name="dbRouteStrategy" ref="longRemainderRouteStrategy"/>
 	</bean>
 
 	<util:map id="tableRuleRoute">
@@ -19,7 +19,7 @@
 			<bean class="com.diwayou.utils.db.shard.rule.TableRule">
 				<property name="tableName" value="user"/>
 				<property name="tableCount" value="2"/>
-				<property name="routeStrategy" ref="longRemainderRouteStrategy"/>
+				<property name="dbRouteStrategy" ref="longRemainderRouteStrategy"/>
 				<property name="dbRule" ref="shardtestDbRule"/>
 			</bean>
 		</entry>

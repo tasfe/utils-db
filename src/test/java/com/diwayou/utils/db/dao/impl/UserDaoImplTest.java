@@ -31,7 +31,7 @@ public class UserDaoImplTest {
     @Test
     public void insertTest() {
         User user = new User();
-        user.setId(1L);
+        user.setId(2L);
         user.setName("diwayou");
         user.setPassword("123");
 
@@ -40,7 +40,7 @@ public class UserDaoImplTest {
 
     @Test
     public void getTest() {
-        User user = userDao.get(1L);
+        User user = userDao.get(2L);
 
         System.out.println(user);
     }

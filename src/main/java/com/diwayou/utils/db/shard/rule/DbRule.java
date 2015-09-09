@@ -1,6 +1,6 @@
 package com.diwayou.utils.db.shard.rule;
 
-import com.diwayou.utils.db.shard.route.RouteStrategy;
+import com.diwayou.utils.db.shard.route.DbRouteStrategy;
 
 /**
  * Created by cn40387 on 15/9/9.
@@ -11,7 +11,7 @@ public class DbRule {
 
     private int dbCount = 1;
 
-    private RouteStrategy routeStrategy;
+    private DbRouteStrategy dbRouteStrategy;
 
     public String getDbName() {
         return dbName;
@@ -29,11 +29,11 @@ public class DbRule {
         this.dbCount = dbCount;
     }
 
-    public RouteStrategy getRouteStrategy() {
-        return routeStrategy;
+    public DbRouteStrategy getDbRouteStrategy() {
+        return dbRouteStrategy;
     }
 
-    public void setRouteStrategy(RouteStrategy routeStrategy) {
-        this.routeStrategy = routeStrategy;
+    public void setDbRouteStrategy(DbRouteStrategy dbRouteStrategy) {
+        this.dbRouteStrategy = dbRouteStrategy;
     }
 }

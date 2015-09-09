@@ -1,17 +1,17 @@
 package com.diwayou.utils.db.shard.route.impl;
 
-import com.diwayou.utils.db.shard.route.RouteStrategy;
+import com.diwayou.utils.db.shard.route.TableRouteStrategy;
 import com.diwayou.utils.db.util.RouteUtil;
 
 /**
  * Created by cn40387 on 15/9/9.
  */
-public class LongRemainderRouteStrategy implements RouteStrategy {
+public class LongRemainderTableRouteStrategy implements TableRouteStrategy {
 
     @Override
-    public String getRouteSuffix(Object routeKey, int shardCount) {
-        if (shardCount <= 0 || shardCount > 9999) {
-            throw new IllegalArgumentException("shardCount must between (0, 9999]");
+    public String getRouteSuffix(Object routeKey, int dbCount, int tableCount) {
+        if (tableCount <= 0 || tableCount > 9999) {
+            throw new IllegalArgumentException("tableCount must between (0, 9999]");
         }
 
         Long key = null;
@@ -28,6 +28,6 @@ public class LongRemainderRouteStrategy implements RouteStrategy {
             throw new IllegalArgumentException("routeKey must > 0");
         }
 
-        return RouteUtil.formatRouteSuffix(key % shardCount);
+        return RouteUtil.formatRouteSuffix(key / dbCount % tableCount);
     }
 }

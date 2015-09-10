@@ -44,4 +44,16 @@ public class UserDaoImplTest {
 
         System.out.println(user);
     }
+
+    @Test
+    public void distributionTest() {
+        User user = new User();
+        user.setName("diwayou");
+        user.setPassword("123");
+
+        for (long id = 1; id < 100; id++) {
+            user.setId(id);
+            userDao.insert(user);
+        }
+    }
 }

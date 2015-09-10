@@ -10,4 +10,5 @@
 	<import resource="ctx-common.xml"/>
 	<import resource="ctx-mybatis.xml"/>
 	<import resource="ctx-dbrule.xml"/>
+	<import resource="ctx-sequence.xml"/>
 </beans>

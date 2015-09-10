@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="simpleSequenceDao" class="com.diwayou.utils.db.sequence.impl.SimpleSequenceDao">
+		<property name="dataSource" ref="shard1"/>
+	</bean>
+
+	<bean id="shardtestSequence" class="com.diwayou.utils.db.sequence.impl.SimpleSequence">
+		<property name="name" value="shardtest"/>
+		<property name="sequenceDao" ref="simpleSequenceDao"/>
+	</bean>
+
+	<bean id="shardSequenceDao" class="com.diwayou.utils.db.sequence.impl.ShardSequenceDao">
+		<property name="adjust" value="true"/>
+		<property name="dataSource" ref="shardDataSource"/>
+		<property name="dbRouteKeys">
+			<list>
+				<value>shardtest_0000</value>
+				<value>shardtest_0001</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="shardtestShardSequence" class="com.diwayou.utils.db.sequence.impl.ShardSequence">
+		<property name="name" value="shardtestShard"/>
+		<property name="sequenceDao" ref="shardSequenceDao"/>
+	</bean>
+</beans>

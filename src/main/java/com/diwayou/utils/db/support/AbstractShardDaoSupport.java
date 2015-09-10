@@ -6,6 +6,7 @@ import com.diwayou.utils.db.shard.route.DbRouteStrategy;
 import com.diwayou.utils.db.shard.route.TableRouteStrategy;
 import com.diwayou.utils.db.shard.rule.DbRule;
 import com.diwayou.utils.db.shard.rule.TableRule;
+import com.diwayou.utils.db.transaction.TransactionContextHolder;
 import com.diwayou.utils.db.util.RouteUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -129,7 +130,13 @@ public abstract class AbstractShardDaoSupport extends SqlSessionDaoSupport imple
         String dbNameSuffix = dbRouteStrategy.getRouteSuffix(routeKey, dbRule.getDbCount());
         String dbName = RouteUtil.buildDbName(dbRule.getDbName(), dbNameSuffix);
 
-        ShardContextHolder.setShardDataSourceName(dbName);
+        if (ShardContextHolder.isShardNull()) {
+            ShardContextHolder.setShardDataSourceName(dbName);
+        } else if (TransactionContextHolder.isInTransaction()) {
+            if (!ShardContextHolder.getShardDataSourceName().equals(dbName)) {
+                throw new ShardDaoException("Can't execute sql for tables from different shard data source in one transaction.");
+            }
+        }
 
         // set table route info
         TableRouteStrategy tableRouteStrategy = tableRule.getTableRouteStrategy();
@@ -140,7 +147,9 @@ public abstract class AbstractShardDaoSupport extends SqlSessionDaoSupport imple
     }
 
     private void clearRouteInfo() {
-        ShardContextHolder.clearShardDataSourceName();
+        if (!TransactionContextHolder.isInTransaction()) {
+            ShardContextHolder.clearShardDataSourceName();
+        }
     }
 
     public void setTableRuleRoute(Map<String, TableRule> tableRuleRoute) {

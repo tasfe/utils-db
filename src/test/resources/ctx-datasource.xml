@@ -41,4 +41,10 @@
 		<property name="defaultTargetDataSource" ref="shard0"/>
 	</bean>
 
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="shardDataSource" />
+    </bean>
+    <bean id="shardTransactionTemplate" class="com.diwayou.utils.db.transaction.ShardTransactionTemplate">
+        <property name="transactionManager" ref="transactionManager"/>
+    </bean>
 </beans>

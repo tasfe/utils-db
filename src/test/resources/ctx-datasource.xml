@@ -8,8 +8,8 @@
 
 	<bean id="abstractDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="username" value="japanis" />
-		<property name="password" value="japanis" />
+		<property name="username" value="123" />
+		<property name="password" value="123" />
 		<property name="initialSize" value="3" />
 		<property name="maxActive" value="5" />
 		<property name="minIdle" value="3" />

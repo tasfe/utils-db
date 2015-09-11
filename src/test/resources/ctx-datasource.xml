@@ -25,10 +25,10 @@
 
 	<!-- data source -->
 	<bean id="shard0" parent="abstractDataSource">
-		<property name="url" value="jdbc:mysql://119.235.236.5:20306/shardtest_0000?zeroDateTimeBehavior=convertToNull&amp;tinyInt1isBit=false&amp;useUnicode=true&amp;mysqlEncoding=utf8&amp;connectTimeout=5000&amp;socketTimeout=5000&amp;useServerPrepStmts=true&amp;cachePrepStmts=true"/>
+		<property name="url" value="jdbc:mysql://127.0.0.1:20306/shardtest_0000?zeroDateTimeBehavior=convertToNull&amp;tinyInt1isBit=false&amp;useUnicode=true&amp;mysqlEncoding=utf8&amp;connectTimeout=5000&amp;socketTimeout=5000&amp;useServerPrepStmts=true&amp;cachePrepStmts=true"/>
 	</bean>
 	<bean id="shard1" parent="abstractDataSource">
-		<property name="url" value="jdbc:mysql://119.235.236.5:20306/shardtest_0001?zeroDateTimeBehavior=convertToNull&amp;tinyInt1isBit=false&amp;useUnicode=true&amp;mysqlEncoding=utf8&amp;connectTimeout=5000&amp;socketTimeout=5000&amp;useServerPrepStmts=true&amp;cachePrepStmts=true"/>
+		<property name="url" value="jdbc:mysql://127.0.0.1:20306/shardtest_0001?zeroDateTimeBehavior=convertToNull&amp;tinyInt1isBit=false&amp;useUnicode=true&amp;mysqlEncoding=utf8&amp;connectTimeout=5000&amp;socketTimeout=5000&amp;useServerPrepStmts=true&amp;cachePrepStmts=true"/>
 	</bean>
 
 	<bean id="shardDataSource" class="com.diwayou.utils.db.shard.ShardRoutingDataSource">

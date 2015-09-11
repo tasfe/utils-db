@@ -24,6 +24,14 @@
 				<property name="dbRule" ref="shardtestDbRule"/>
 			</bean>
 		</entry>
+		<entry key="item">
+			<bean class="com.diwayou.utils.db.shard.rule.TableRule">
+				<property name="tableName" value="item"/>
+				<property name="tableCount" value="1"/>
+				<property name="tableRouteStrategy" ref="longRemainderTableRouteStrategy"/>
+				<property name="dbRule" ref="shardtestDbRule"/>
+			</bean>
+		</entry>
 	</util:map>
 
 </beans>

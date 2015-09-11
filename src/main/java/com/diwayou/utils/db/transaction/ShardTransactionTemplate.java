@@ -6,6 +6,7 @@ import com.diwayou.utils.db.shard.route.DbRouteStrategy;
 import com.diwayou.utils.db.shard.rule.DbRule;
 import com.diwayou.utils.db.util.RouteUtil;
 import org.springframework.transaction.TransactionException;
+import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
@@ -13,7 +14,12 @@ import org.springframework.transaction.support.TransactionTemplate;
  */
 public class ShardTransactionTemplate extends TransactionTemplate {
 
-    public <T> T execute(ShardTransactionCallback<T> action, Object routeKey) throws TransactionException {
+    @Override
+    public <T> T execute(TransactionCallback<T> action) throws TransactionException {
+        throw new UnsupportedOperationException();
+    }
+
+    public <T> T execute(Object routeKey, ShardTransactionCallback<T> action) throws TransactionException {
         DbRule dbRule = action.getDbRule();
         if (dbRule == null) {
             throw new ShardDaoException("Must set dbRule.");

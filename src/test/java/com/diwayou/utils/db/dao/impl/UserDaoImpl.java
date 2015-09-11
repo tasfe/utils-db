@@ -24,7 +24,7 @@ public class UserDaoImpl extends AbstractShardDaoSupport implements UserDao {
         Map<String, Object> parameter = new HashMap<String, Object>();
         parameter.put("user", user);
 
-        insert("insert", user.getId(), parameter);
+        insert("com.diwayou.utils.db.dao.UserDao.insert", user.getId(), parameter);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class UserDaoImpl extends AbstractShardDaoSupport implements UserDao {
         Map<String, Object> parameter = new HashMap<String, Object>();
         parameter.put("id", id);
 
-        return selectOne("get", id, parameter);
+        return selectOne("com.diwayou.utils.db.dao.UserDao.get", id, parameter);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class UserDaoImpl extends AbstractShardDaoSupport implements UserDao {
         Map<String, Object> parameter = new HashMap<String, Object>();
         parameter.put("id", id);
 
-        return delete("delete", id, parameter);
+        return delete("com.diwayou.utils.db.dao.UserDao.delete", id, parameter);
     }
 
     @Override
@@ -48,6 +48,6 @@ public class UserDaoImpl extends AbstractShardDaoSupport implements UserDao {
         Map<String, Object> parameter = new HashMap<String, Object>();
         parameter.put("user", user);
 
-        return update("update", user.getId(), parameter);
+        return update("com.diwayou.utils.db.dao.UserDao.update", user.getId(), parameter);
     }
 }
